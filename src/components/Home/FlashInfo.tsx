@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography, Button, Paper, Dialog, IconButton } from '@mui/material';
 import BoltIcon from '@mui/icons-material/Bolt';
 import CloseIcon from '@mui/icons-material/Close';
-import promoImage from '/shooting_service_composition_1768795530003.png'; // Fallback image
+import promoImage from '../../assets/flashInfos/une-image-a-1000f.jpeg'; // Fallback image
 
 const FlashInfo: React.FC = () => {
     const [open, setOpen] = useState(false);
