@@ -3,17 +3,25 @@ import { Box, Container, Typography, Button, Chip } from '@mui/material';
 import ProductCard from '../components/Shop/ProductCard';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
+import s1 from '../assets/shop/1.png';
+import s3 from '../assets/shop/3.png';
+import s4 from '../assets/shop/4.png';
+import s5 from '../assets/shop/5.png';
+import s6 from '../assets/shop/6.png';
+import s7 from '../assets/shop/7.png';
+import s8 from '../assets/shop/8.png';
+
 const categories = ['All', 'Prints', 'Frames', 'Goodies', 'Second-Hand'];
 
 const mockProducts = [
-    { id: 1, name: 'Professional Print A4', price: '5 000 Fcfa', purchaseType: 'whatsapp' as const, category: 'Prints' },
-    { id: 2, name: 'Gallery Frame Black', price: '15 000 Fcfa', purchaseType: 'whatsapp' as const, category: 'Frames' },
-    { id: 3, name: 'Film Roll Pack', price: '8 000 Fcfa', purchaseType: 'chariow' as const, purchaseLink: 'https://chariow.com/product/film-roll', category: 'Goodies' },
-    { id: 4, name: 'Vintage Camera Lens', price: '75 000 Fcfa', purchaseType: 'whatsapp' as const, category: 'Second-Hand' },
-    { id: 5, name: 'Studio Lighting Kit', price: '150 000 Fcfa', purchaseType: 'chariow' as const, purchaseLink: 'https://chariow.com/product/lighting-kit', category: 'Goodies' },
-    { id: 6, name: 'Matte Photo Paper', price: '3 500 Fcfa', purchaseType: 'whatsapp' as const, category: 'Prints' },
-    { id: 7, name: 'Tripod Stand', price: '25 000 Fcfa', purchaseType: 'chariow' as const, purchaseLink: 'https://chariow.com/product/tripod', category: 'Goodies' },
-    { id: 8, name: 'Lens Cleaning Kit', price: '5 000 Fcfa', purchaseType: 'whatsapp' as const, category: 'Goodies' },
+    { id: 1, name: 'Professional Print A4', price: '5 000 Fcfa', purchaseType: 'whatsapp' as const, category: 'Prints', image: s1 },
+    { id: 2, name: 'Gallery Frame Black', price: '15 000 Fcfa', purchaseType: 'whatsapp' as const, category: 'Frames', image: s3 },
+    { id: 3, name: 'Film Roll Pack', price: '8 000 Fcfa', purchaseType: 'chariow' as const, purchaseLink: 'https://chariow.com/product/film-roll', category: 'Goodies', image: s4 },
+    { id: 4, name: 'Vintage Camera Lens', price: '75 000 Fcfa', purchaseType: 'whatsapp' as const, category: 'Second-Hand', image: s5 },
+    { id: 5, name: 'Studio Lighting Kit', price: '150 000 Fcfa', purchaseType: 'chariow' as const, purchaseLink: 'https://chariow.com/product/lighting-kit', category: 'Goodies', image: s6 },
+    { id: 6, name: 'Matte Photo Paper', price: '3 500 Fcfa', purchaseType: 'whatsapp' as const, category: 'Prints', image: s7 },
+    { id: 7, name: 'Tripod Stand', price: '25 000 Fcfa', purchaseType: 'chariow' as const, purchaseLink: 'https://chariow.com/product/tripod', category: 'Goodies', image: s8 },
+    { id: 8, name: 'Lens Cleaning Kit', price: '5 000 Fcfa', purchaseType: 'whatsapp' as const, category: 'Goodies', image: s1 },
 ];
 
 import { useCart } from '../context/CartContext';
