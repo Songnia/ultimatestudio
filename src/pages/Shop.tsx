@@ -6,14 +6,14 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 const categories = ['All', 'Prints', 'Frames', 'Goodies', 'Second-Hand'];
 
 const mockProducts = [
-    { id: 1, name: 'Professional Print A4', price: '$45.00', purchaseType: 'whatsapp' as const, category: 'Prints' },
-    { id: 2, name: 'Gallery Frame Black', price: '$89.00', purchaseType: 'whatsapp' as const, category: 'Frames' },
-    { id: 3, name: 'Film Roll Pack', price: '$25.00', purchaseType: 'chariow' as const, purchaseLink: 'https://chariow.com/product/film-roll', category: 'Goodies' },
-    { id: 4, name: 'Vintage Camera Lens', price: '$120.00', purchaseType: 'whatsapp' as const, category: 'Second-Hand' },
-    { id: 5, name: 'Studio Lighting Kit', price: '$350.00', purchaseType: 'chariow' as const, purchaseLink: 'https://chariow.com/product/lighting-kit', category: 'Goodies' },
-    { id: 6, name: 'Matte Photo Paper', price: '$30.00', purchaseType: 'whatsapp' as const, category: 'Prints' },
-    { id: 7, name: 'Tripod Stand', price: '$75.00', purchaseType: 'chariow' as const, purchaseLink: 'https://chariow.com/product/tripod', category: 'Goodies' },
-    { id: 8, name: 'Lens Cleaning Kit', price: '$15.00', purchaseType: 'whatsapp' as const, category: 'Goodies' },
+    { id: 1, name: 'Professional Print A4', price: '5 000 Fcfa', purchaseType: 'whatsapp' as const, category: 'Prints' },
+    { id: 2, name: 'Gallery Frame Black', price: '15 000 Fcfa', purchaseType: 'whatsapp' as const, category: 'Frames' },
+    { id: 3, name: 'Film Roll Pack', price: '8 000 Fcfa', purchaseType: 'chariow' as const, purchaseLink: 'https://chariow.com/product/film-roll', category: 'Goodies' },
+    { id: 4, name: 'Vintage Camera Lens', price: '75 000 Fcfa', purchaseType: 'whatsapp' as const, category: 'Second-Hand' },
+    { id: 5, name: 'Studio Lighting Kit', price: '150 000 Fcfa', purchaseType: 'chariow' as const, purchaseLink: 'https://chariow.com/product/lighting-kit', category: 'Goodies' },
+    { id: 6, name: 'Matte Photo Paper', price: '3 500 Fcfa', purchaseType: 'whatsapp' as const, category: 'Prints' },
+    { id: 7, name: 'Tripod Stand', price: '25 000 Fcfa', purchaseType: 'chariow' as const, purchaseLink: 'https://chariow.com/product/tripod', category: 'Goodies' },
+    { id: 8, name: 'Lens Cleaning Kit', price: '5 000 Fcfa', purchaseType: 'whatsapp' as const, category: 'Goodies' },
 ];
 
 import { useCart } from '../context/CartContext';

@@ -73,7 +73,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     // Helper to parse price string like "$45.00" to number
     const parsePrice = (priceStr: string) => {
-        return parseFloat(priceStr.replace(/[^0-9.]/g, '')) || 0;
+        return parseFloat(priceStr.replace(/[^0-9]/g, '')) || 0;
     };
 
     const cartTotal = items.reduce((total, item) => total + (parsePrice(item.price) * item.quantity), 0);

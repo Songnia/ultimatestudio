@@ -9,6 +9,8 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import { Link as RouterLink } from 'react-router-dom';
 
+import logo from '../../assets/logo/logo2.svg';
+
 const Footer: React.FC = () => {
     return (
         <Box component="footer" sx={{ backgroundColor: '#181811', color: 'white', pt: 8, pb: 4 }}>
@@ -16,9 +18,9 @@ const Footer: React.FC = () => {
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                     {/* Brand Column */}
                     <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 30%' } }}>
-                        <Typography variant="h5" sx={{ fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: 1, mb: 3 }}>
-                            Ultimate Studio
-                        </Typography>
+                        <Box sx={{ mb: 3 }}>
+                            <img src={logo} alt="Ultimate Studio Logo" style={{ height: '40px', filter: 'brightness(0) invert(1)' }} />
+                        </Box>
                         <Typography variant="body2" sx={{ color: 'grey.400', mb: 3, lineHeight: 1.8, maxWidth: '300px' }}>
                             Capturing life's most precious moments with professional excellence. From studio portraits to grand events, we bring your vision to life.
                         </Typography>

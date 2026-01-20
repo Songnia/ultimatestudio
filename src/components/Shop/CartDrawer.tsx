@@ -121,7 +121,7 @@ const CartDrawer: React.FC = () => {
                         <Box sx={{ p: 3, borderTop: '1px solid', borderColor: 'divider', backgroundColor: 'grey.50' }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                                 <Typography variant="subtitle1">Subtotal</Typography>
-                                <Typography variant="subtitle1" fontWeight="bold">${cartTotal.toFixed(2)}</Typography>
+                                <Typography variant="subtitle1" fontWeight="bold">{cartTotal.toLocaleString()} Fcfa</Typography>
                             </Box>
                             <Button
                                 variant="contained"

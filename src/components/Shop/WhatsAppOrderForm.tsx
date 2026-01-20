@@ -42,7 +42,7 @@ const WhatsAppOrderForm: React.FC<WhatsAppOrderFormProps> = ({ open, onClose }) 
         items.forEach(item => {
             message += `• ${item.name} x${item.quantity} - ${item.price}\n`;
         });
-        message += `\nTotal: $${cartTotal.toFixed(2)}\n\n`;
+        message += `\nTotal: ${cartTotal.toLocaleString()} Fcfa\n\n`;
         message += "Mes informations:\n";
         message += `Nom: ${name}\n`;
         message += `Téléphone: ${phone}`;
@@ -93,7 +93,7 @@ const WhatsAppOrderForm: React.FC<WhatsAppOrderFormProps> = ({ open, onClose }) 
                         <Typography variant="body2" component="pre" sx={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', color: 'text.secondary' }}>
                             {"Bonjour, je souhaite commander:\n"}
                             {items.map(item => `• ${item.name} x${item.quantity} - ${item.price}\n`)}
-                            {`\nTotal: $${cartTotal.toFixed(2)}`}
+                            {`\nTotal: ${cartTotal.toLocaleString()} Fcfa`}
                         </Typography>
                     </Box>
                 </Box>

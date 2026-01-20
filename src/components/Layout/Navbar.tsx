@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Box, Button, Drawer, List, ListItem, ListItemButton, ListItemText, useTheme, useMediaQuery, Badge } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Box, Button, Drawer, List, ListItem, ListItemButton, ListItemText, useTheme, useMediaQuery, Badge } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { Link as RouterLink } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import logo from '../../assets/logo/logo2.svg';
 
 const Navbar: React.FC = () => {
     const theme = useTheme();
@@ -25,10 +26,19 @@ const Navbar: React.FC = () => {
     ];
 
     const drawer = (
-        <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" sx={{ my: 2 }}>
-                ULTIMATE STUDIO
-            </Typography>
+        <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center', py: 2 }}>
+            <Box
+                component={RouterLink}
+                to="/"
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    mb: 2,
+                    textDecoration: 'none'
+                }}
+            >
+                <img src={logo} alt="Ultimate Studio Logo" style={{ height: '40px' }} />
+            </Box>
             <List>
                 {navItems.map((item) => (
                     <ListItem key={item.label} disablePadding>
@@ -65,21 +75,15 @@ const Navbar: React.FC = () => {
                     to="/"
                     sx={{
                         display: 'flex',
-                        flexDirection: 'column',
                         alignItems: 'center',
                         position: 'absolute',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
+                        left: { xs: '50%', md: '10%' },
+                        transform: { xs: 'translateX(-50%)', md: 'none' },
                         textDecoration: 'none',
                         color: 'inherit'
                     }}
                 >
-                    <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: 1 }}>
-                        Ultimate Studio
-                    </Typography>
-                    <Typography variant="caption" sx={{ display: { xs: 'none', sm: 'block' }, letterSpacing: 2, color: 'text.secondary' }}>
-                        BLUEPRINT MODE V1.0
-                    </Typography>
+                    <img src={logo} alt="Ultimate Studio Logo" style={{ height: isMobile ? '32px' : '45px' }} />
                 </Box>
 
                 {/* Right: Links (Desktop) & Actions */}
