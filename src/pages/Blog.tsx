@@ -10,7 +10,7 @@ const mockArticles = [
         title: 'FLASH SALE: 1000f Promo for All Sessions',
         excerpt: 'Limited time offer! Get our professional photography services at an unbeatable price. Book now and save on weddings, events, and corporate shoots.',
         date: 'Jan 15, 2026',
-        author: 'Ultimate Studio',
+        author: 'Ultimata Studios',
         category: 'Promos',
     },
     {
@@ -42,7 +42,7 @@ const mockArticles = [
         title: 'Client Spotlight: Marie & Thomas Wedding',
         excerpt: 'A beautiful love story captured through our lens. See highlights from this stunning ceremony and celebration.',
         date: 'Dec 20, 2025',
-        author: 'Ultimate Studio',
+        author: 'Ultimata Studios',
         category: 'Behind the Scenes',
     },
     {
@@ -50,7 +50,7 @@ const mockArticles = [
         title: 'Holiday Special: Gift Cards Now Available',
         excerpt: 'Give the gift of memories this holiday season. Our gift cards are perfect for any occasion and never expire.',
         date: 'Dec 15, 2025',
-        author: 'Ultimate Studio',
+        author: 'Ultimata Studios',
         category: 'Promos',
     },
 ];

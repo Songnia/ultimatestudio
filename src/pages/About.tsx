@@ -54,7 +54,7 @@ const About: React.FC = () => {
                                 Biographie
                             </Typography>
                             <Typography variant="body1" color="text.secondary" paragraph sx={{ lineHeight: 1.8 }}>
-                                Passionné par l'image depuis plus de 10 ans, j'ai fondé Ultimate Studio avec une vision simple : capturer l'authenticité. Mon parcours m'a mené de la photographie de rue aux studios de mode, forgeant un style unique qui mêle spontanéité et maîtrise technique.
+                                Passionné par l'image depuis plus de 10 ans, j'ai fondé Ultimata Studios avec une vision simple : capturer l'authenticité. Mon parcours m'a mené de la photographie de rue aux studios de mode, forgeant un style unique qui mêle spontanéité et maîtrise technique.
                             </Typography>
                             <Typography variant="body1" color="text.secondary" paragraph sx={{ lineHeight: 1.8 }}>
                                 J'ai eu le privilège de travailler avec des marques prestigieuses et de documenter des centaines d'histoires d'amour et de réussite. Aujourd'hui, je mets cette expérience au service de vos projets.

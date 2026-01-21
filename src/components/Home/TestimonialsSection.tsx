@@ -7,7 +7,7 @@ const testimonials = [
         id: 1,
         name: 'Sarah & Julien',
         role: 'Mariage',
-        content: "Ultimate Studio a su capturer l'essence même de notre mariage. Les photos sont naturelles, lumineuses et pleines d'émotion. Un grand merci à toute l'équipe pour leur professionnalisme !",
+        content: "Ultimata Studios a su capturer l'essence même de notre mariage. Les photos sont naturelles, lumineuses et pleines d'émotion. Un grand merci à toute l'équipe pour leur professionnalisme !",
         rating: 5,
         avatar: 'https://source.unsplash.com/random/100x100?couple',
     },

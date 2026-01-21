@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
                     textDecoration: 'none'
                 }}
             >
-                <img src={logo} alt="Ultimate Studio Logo" style={{ height: '40px' }} />
+                <img src={logo} alt="Ultimata Studios Logo" style={{ height: '40px' }} />
             </Box>
             <List>
                 {navItems.map((item) => (
@@ -83,7 +83,7 @@ const Navbar: React.FC = () => {
                         color: 'inherit'
                     }}
                 >
-                    <img src={logo} alt="Ultimate Studio Logo" style={{ height: isMobile ? '32px' : '45px' }} />
+                    <img src={logo} alt="Ultimata Studios Logo" style={{ height: isMobile ? '32px' : '45px' }} />
                 </Box>
 
                 {/* Right: Links (Desktop) & Actions */}
