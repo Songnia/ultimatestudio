@@ -1,22 +1,60 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Box, Typography, Button, Chip } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowBack as BackIcon, Download as DownloadIcon, Favorite as FavoriteIcon } from '@mui/icons-material';
+import { ArrowBack as BackIcon, Download as DownloadIcon, Favorite as FavoriteIcon, Delete as DeleteIcon, Add as AddIcon } from '@mui/icons-material';
 import { galleryService } from '../../services/galleryService';
 import type { Gallery } from '../../types/gallery';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
+import { IconButton, CircularProgress } from '@mui/material';
 
 const GalleryManagement: React.FC = () => {
     const { uuid } = useParams<{ uuid: string }>();
     const navigate = useNavigate();
     const [gallery, setGallery] = useState<Gallery | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    const fetchGallery = async () => {
+        if (uuid) {
+            try {
+                const g = await galleryService.getGalleryByUUID(uuid);
+                setGallery(g);
+            } catch (error) {
+                console.error("Failed to fetch gallery", error);
+            }
+        }
+    };
 
     useEffect(() => {
-        if (uuid) {
-            const g = galleryService.getGalleryByUUID(uuid);
-            setGallery(g);
-        }
+        fetchGallery();
     }, [uuid]);
+
+    const handleAddPhotos = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files || !uuid) return;
+
+        setLoading(true);
+        try {
+            const files = Array.from(e.target.files);
+            await galleryService.addPhotosToGallery(uuid, files);
+            await fetchGallery();
+        } catch (error) {
+            console.error("Failed to add photos", error);
+            alert("Erreur lors de l'ajout des photos.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDeletePhoto = async (photoId: string) => {
+        if (!uuid || !window.confirm('Supprimer cette photo ?')) return;
+
+        try {
+            await galleryService.deletePhotoFromGallery(uuid, photoId);
+            await fetchGallery();
+        } catch (error) {
+            console.error("Failed to delete photo", error);
+            alert("Erreur lors de la suppression de la photo.");
+        }
+    };
 
     const handleExportSelections = () => {
         if (!gallery) return;
@@ -67,17 +105,43 @@ const GalleryManagement: React.FC = () => {
                         </Typography>
                     </Box>
 
-                    {selectedCount > 0 && (
+                    <Box sx={{ display: 'flex', gap: 2 }}>
                         <Button
                             variant="contained"
-                            color="primary"
-                            startIcon={<DownloadIcon />}
-                            onClick={handleExportSelections}
-                            sx={{ fontWeight: 'bold' }}
+                            component="label"
+                            startIcon={loading ? <CircularProgress size={20} /> : <AddIcon />}
+                            disabled={loading}
+                            sx={{
+                                backgroundColor: 'primary.main',
+                                color: 'black',
+                                fontWeight: 'bold',
+                                '&:hover': {
+                                    backgroundColor: 'primary.dark',
+                                }
+                            }}
                         >
-                            Exporter
+                            Ajouter des photos
+                            <input
+                                type="file"
+                                hidden
+                                multiple
+                                accept="image/*"
+                                onChange={handleAddPhotos}
+                            />
                         </Button>
-                    )}
+
+                        {/* {selectedCount > 0 && (
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                startIcon={<DownloadIcon />}
+                                onClick={handleExportSelections}
+                                sx={{ fontWeight: 'bold' }}
+                            >
+                                Exporter
+                            </Button>
+                        )} */}
+                    </Box>
                 </Box>
 
                 <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
@@ -112,6 +176,7 @@ const GalleryManagement: React.FC = () => {
                                 borderRadius: '4px',
                                 border: image.isLiked ? '3px solid' : 'none',
                                 borderColor: image.isLiked ? 'primary.main' : 'transparent',
+                                '&:hover .delete-btn': { opacity: 1 }
                             }}
                         >
                             <img
@@ -119,6 +184,25 @@ const GalleryManagement: React.FC = () => {
                                 alt={image.filename}
                                 style={{ width: '100%', display: 'block' }}
                             />
+
+                            {/* Delete Button */}
+                            <IconButton
+                                className="delete-btn"
+                                onClick={() => handleDeletePhoto(image.id)}
+                                sx={{
+                                    position: 'absolute',
+                                    top: 8,
+                                    left: 8,
+                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                    opacity: 0,
+                                    transition: 'opacity 0.2s',
+                                    '&:hover': { backgroundColor: 'white', color: 'error.main' }
+                                }}
+                                size="small"
+                            >
+                                <DeleteIcon fontSize="small" />
+                            </IconButton>
+
                             {image.isLiked && (
                                 <Box
                                     sx={{

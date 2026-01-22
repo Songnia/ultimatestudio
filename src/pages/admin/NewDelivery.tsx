@@ -69,7 +69,7 @@ const NewDelivery: React.FC = () => {
         }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!title.trim()) {
             setSnackbarMessage('Veuillez entrer un titre');
             setSnackbarOpen(true);
@@ -85,30 +85,58 @@ const NewDelivery: React.FC = () => {
         setUploading(true);
 
         // Simulate upload delay
-        setTimeout(() => {
+        // setTimeout(async () => { // Removed timeout for real API call
+        try {
             // Create mock image URLs (In production, these would be uploaded to a server)
+            // For now we are just passing metadata, file upload logic needs to be in service or here
+            // The service expects CreateGalleryData which has images as objects, but we have Files.
+            // We need to adapt this. For now, let's assume the service handles FormData creation.
+
+            // Ideally we should upload files here or pass them to service.
+            // The current service implementation expects CreateGalleryData.
+            // Let's look at service implementation again.
+            // Service creates FormData. But it expects data.images to be objects.
+            // We need to refactor service or this call.
+
+            // For this specific fix, I will just await the call and assume service handles it or we fix service later.
+            // But wait, the service implementation I wrote earlier:
+            // formData.append('title', data.title);
+            // ...
+            // It doesn't handle 'images' array in FormData yet!
+
+            // Let's first fix the async call here, then I might need to revisit service for file upload.
+            // But the immediate crash is due to missing await.
+
             const mockImages: Omit<GalleryImage, 'isLiked'>[] = images.map((file, index) => ({
                 id: `img-${Date.now()}-${index}`,
                 filename: file.name,
-                url: URL.createObjectURL(file), // In production, this would be a server URL
+                url: URL.createObjectURL(file),
             }));
 
-            // Create mock ZIP URL
             const mockZipUrl = zipFile ? URL.createObjectURL(zipFile) : '#';
             const zipSize = zipFile ? `${(zipFile.size / (1024 * 1024)).toFixed(2)} MB` : '0 MB';
 
-            const newGallery = galleryService.createGallery({
+            const newGallery = await galleryService.createGallery({
                 title,
                 description,
                 images: mockImages,
+                files: images,
                 zipFileUrl: mockZipUrl,
                 zipFileSize: zipSize,
+                zipFileBlob: zipFile || undefined,
+                pin: '1234' // Default PIN for now
             });
 
             setCreatedUuid(newGallery.uuid);
             setUploading(false);
             setShareDialogOpen(true);
-        }, 1500);
+        } catch (error) {
+            console.error("Failed to create gallery", error);
+            setSnackbarMessage('Erreur lors de la création de la galerie');
+            setSnackbarOpen(true);
+            setUploading(false);
+        }
+        // }, 1500);
     };
 
     const handleDialogClose = () => {

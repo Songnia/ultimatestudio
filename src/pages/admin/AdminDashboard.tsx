@@ -18,14 +18,18 @@ const AdminDashboard: React.FC = () => {
         loadGalleries();
     }, []);
 
-    const loadGalleries = () => {
-        const allGalleries = galleryService.getAllGalleries();
-        setGalleries(allGalleries);
+    const loadGalleries = async () => {
+        try {
+            const allGalleries = await galleryService.getAllGalleries();
+            setGalleries(allGalleries);
+        } catch (error) {
+            console.error("Failed to load galleries", error);
+        }
     };
 
-    const handleDelete = (uuid: string) => {
+    const handleDelete = async (uuid: string) => {
         if (window.confirm('Êtes-vous sûr de vouloir supprimer cette galerie ?')) {
-            galleryService.deleteGallery(uuid);
+            await galleryService.deleteGallery(uuid);
             loadGalleries();
         }
     };

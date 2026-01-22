@@ -30,17 +30,24 @@ const ClientGalleryView: React.FC = () => {
     const [snackbarMessage, setSnackbarMessage] = useState('');
 
     useEffect(() => {
-        if (uuid) {
-            const g = galleryService.getGalleryByUUID(uuid);
-            setGallery(g);
-        }
+        const fetchGallery = async () => {
+            if (uuid) {
+                try {
+                    const g = await galleryService.getGalleryByUUID(uuid);
+                    setGallery(g);
+                } catch (error) {
+                    console.error("Failed to fetch gallery", error);
+                }
+            }
+        };
+        fetchGallery();
     }, [uuid]);
 
-    const handleToggleLike = (imageId: string) => {
+    const handleToggleLike = async (imageId: string) => {
         if (uuid) {
             galleryService.toggleImageLike(uuid, imageId);
             // Refresh gallery
-            const updatedGallery = galleryService.getGalleryByUUID(uuid);
+            const updatedGallery = await galleryService.getGalleryByUUID(uuid);
             setGallery(updatedGallery);
         }
     };

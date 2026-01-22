@@ -19,8 +19,10 @@ export interface Gallery {
 export interface CreateGalleryData {
     title: string;
     description: string;
-    images: Omit<GalleryImage, 'isLiked'>[];
+    images: Omit<GalleryImage, 'isLiked'>[]; // Keep for compatibility or remove if unused
+    files?: File[]; // Actual image files
     zipFileUrl: string;
     zipFileSize: string;
+    zipFileBlob?: File; // Actual zip file
     pin?: string;
 }

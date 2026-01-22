@@ -1,79 +1,109 @@
+import { api } from './api';
 import type { Gallery, GalleryImage, CreateGalleryData } from '../types/gallery';
-import { storageService, GALLERIES_KEY } from './storageService';
 
-// Generate a simple UUID-like string
-const generateUUID = (): string => {
-    return Math.random().toString(36).substring(2, 9) + '-' + Math.random().toString(36).substring(2, 4);
-};
-
-// Get current date in ISO format
-const getCurrentDate = (): string => {
-    return new Date().toISOString().split('T')[0];
+// Helper to map backend response to frontend type
+const mapGalleryFromApi = (data: any): Gallery => {
+    return {
+        uuid: data.uuid,
+        title: data.title,
+        description: data.description,
+        createdAt: data.created_at,
+        images: data.photos.map((photo: any) => ({
+            id: photo.id.toString(),
+            filename: photo.file_path.split('/').pop() || `image-${photo.id}.jpg`,
+            url: photo.url,
+            isLiked: photo.is_liked,
+        })),
+        zipFileUrl: data.zip_url || '#',
+        zipFileSize: 'Unknown', // TODO: Add size to backend response
+        pin: data.pin_code,
+    };
 };
 
 export const galleryService = {
-    // Get all galleries
-    getAllGalleries: (): Gallery[] => {
-        return storageService.get<Gallery[]>(GALLERIES_KEY, []);
+    // Get all galleries (Admin only - requires auth)
+    getAllGalleries: async (): Promise<Gallery[]> => {
+        const response = await api.get('/admin/galleries');
+        return response.data.data.map(mapGalleryFromApi);
     },
 
-    // Get gallery by UUID
-    getGalleryByUUID: (uuid: string): Gallery | null => {
-        const galleries = storageService.get<Gallery[]>(GALLERIES_KEY, []);
-        return galleries.find(g => g.uuid === uuid) || null;
-    },
-
-    // Create new gallery
-    createGallery: (data: CreateGalleryData): Gallery => {
-        const galleries = storageService.get<Gallery[]>(GALLERIES_KEY, []);
-
-        const newGallery: Gallery = {
-            uuid: generateUUID(),
-            title: data.title,
-            description: data.description,
-            createdAt: getCurrentDate(),
-            images: data.images.map(img => ({ ...img, isLiked: false })),
-            zipFileUrl: data.zipFileUrl,
-            zipFileSize: data.zipFileSize,
-            pin: data.pin,
-        };
-
-        galleries.push(newGallery);
-        storageService.set(GALLERIES_KEY, galleries);
-
-        return newGallery;
-    },
-
-    // Delete gallery
-    deleteGallery: (uuid: string): void => {
-        const galleries = storageService.get<Gallery[]>(GALLERIES_KEY, []);
-        const filtered = galleries.filter(g => g.uuid !== uuid);
-        storageService.set(GALLERIES_KEY, filtered);
-    },
-
-    // Toggle image like
-    toggleImageLike: (uuid: string, imageId: string): void => {
-        const galleries = storageService.get<Gallery[]>(GALLERIES_KEY, []);
-        const gallery = galleries.find(g => g.uuid === uuid);
-
-        if (gallery) {
-            const image = gallery.images.find(img => img.id === imageId);
-            if (image) {
-                image.isLiked = !image.isLiked;
-                storageService.set(GALLERIES_KEY, galleries);
-            }
+    // Get gallery by UUID (Public)
+    getGalleryByUUID: async (uuid: string): Promise<Gallery | null> => {
+        try {
+            const response = await api.get(`/client/gallery/${uuid}`);
+            return mapGalleryFromApi(response.data);
+        } catch (error) {
+            console.error('Failed to fetch gallery', error);
+            return null;
         }
     },
 
+    // Create new gallery (Admin)
+    createGallery: async (data: CreateGalleryData): Promise<Gallery> => {
+        const formData = new FormData();
+        formData.append('title', data.title);
+        formData.append('description', data.description);
+        if (data.pin) formData.append('pin_code', data.pin);
+
+        // Append photos
+        if (data.files && data.files.length > 0) {
+            data.files.forEach((file) => {
+                formData.append('photos[]', file);
+            });
+        }
+
+        // Append ZIP file
+        if (data.zipFileBlob) {
+            formData.append('zip_file', data.zipFileBlob);
+        }
+
+        const response = await api.post('/admin/galleries', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return mapGalleryFromApi(response.data);
+    },
+
+    // Delete gallery (Admin)
+    deleteGallery: async (id: string): Promise<void> => {
+        await api.delete(`/admin/galleries/${id}`);
+    },
+
+    // Add photos to existing gallery (Admin)
+    addPhotosToGallery: async (id: string, files: File[]): Promise<Gallery> => {
+        const formData = new FormData();
+        files.forEach((file) => {
+            formData.append('photos[]', file);
+        });
+
+        const response = await api.post(`/admin/galleries/${id}/photos`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return mapGalleryFromApi(response.data);
+    },
+
+    // Delete photo from gallery (Admin)
+    deletePhotoFromGallery: async (galleryId: string, photoId: string): Promise<void> => {
+        await api.delete(`/admin/galleries/${galleryId}/photos/${photoId}`);
+    },
+
+    // Toggle image like (Public)
+    toggleImageLike: async (uuid: string, imageId: string): Promise<void> => {
+        await api.post(`/client/gallery/${uuid}/like`, { photo_id: imageId });
+    },
+
     // Get selected (liked) images
-    getSelectedImages: (uuid: string): GalleryImage[] => {
-        const gallery = galleryService.getGalleryByUUID(uuid);
+    getSelectedImages: async (uuid: string): Promise<GalleryImage[]> => {
+        const gallery = await galleryService.getGalleryByUUID(uuid);
         return gallery ? gallery.images.filter(img => img.isLiked) : [];
     },
 
     // Get stats for a gallery
-    getGalleryStats: (uuid: string): { totalImages: number; likedCount: number } => {
-        const gallery = galleryService.getGalleryByUUID(uuid);
+    getGalleryStats: async (uuid: string): Promise<{ totalImages: number; likedCount: number }> => {
+        const gallery = await galleryService.getGalleryByUUID(uuid);
         if (!gallery) return { totalImages: 0, likedCount: 0 };
 
         return {
